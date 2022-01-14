@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recipes</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/css/bootstrap.min.css" integrity="sha384-r4NyP46KrjDleawBgD5tp8Y7UzmLA05oM1iAEQ17CSuDqnUK2+k9luXQOfXJCJ4I" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/js/bootstrap.min.js" integrity="sha384-oesi62hOLfzrys4LxRF63OJCXdXDipiYWBnvTl9Y9/TRlw5xlKIEHpNyvvDShgf/" crossorigin="anonymous"></script>
+</head>
+<body>
+    <div class="container w-75">
+        <nav class="navbar bg-secondary p-2 justify-content-between mb-4">
+            <h3 class="text-light ml-4">{{ user.first_name }}'s Recipes</h3>
+            <div class="d-flex">
+                <a class="btn rounded-pill btn-success" href="/logout">View All Recipes</a>
+                <a class="btn rounded-pill btn-danger ml-4 mr-4" href="/logout">Logout</a>
+            </div>
+        </nav>
+        <h1 class="text-center mb-3">Add New Recipe</h1>
+        <form class="d-flex justify-content-center" action="" method="post">
+            <div class="mb-3 mr-5">
+                <label for="name" class="form-label">Name:</label>
+                <input type="text" class="form-control mb-3" name="name">
+                <label for="description" class="form-label">Description:</label>
+                <textarea name="description" class="form-control mb-3" cols="30" rows="5"></textarea>
+                <label for="instructions" class="form-label">Instructions:</label>
+                <textarea name="instructions" class="form-control" cols="30" rows="5"></textarea>
+            </div>
+            <div class="mb-3 ml-5">
+                <label for="date_made" class="form-label">Date Made On:</label><br>
+                <input type="date" name="date_made" id=""><br>
+                <label for="make_time" class="form-label mt-3">Ready in 30 Minutes?</label><br>
+                <input type="radio" name="make_time" value="Yes">
+                <label for="make_time">Yes</label><br>
+                <input type="radio" name="make_time" value="No">
+                <label for="make_time">No</label><br>
+            </div>
+        </form>
+    </div>
+</body>
+</html>
