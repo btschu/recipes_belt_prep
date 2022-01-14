@@ -13,12 +13,19 @@
         <nav class="navbar bg-secondary p-2 justify-content-between mb-4">
             <h3 class="text-light ml-4">{{ user.first_name }}'s Recipes</h3>
             <div class="d-flex">
-                <a class="btn rounded-pill btn-success" href="/logout">View All Recipes</a>
+                <a class="btn rounded-pill btn-success" href="/all_recipes">View All Recipes</a>
                 <a class="btn rounded-pill btn-danger ml-4 mr-4" href="/logout">Logout</a>
             </div>
         </nav>
         <h1 class="text-center mb-3">Add New Recipe</h1>
-        <form class="d-flex justify-content-center" action="" method="post">
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                {% for message in messages %}
+                    <p class='mb-3 text-danger text-center'><em>{{ message }} </em></p>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+        <form class="d-flex justify-content-center" action="/create/recipe" method="post">
             <div class="mb-3 mr-5">
                 <label for="name" class="form-label">Name:</label>
                 <input type="text" class="form-control mb-3" name="name">
@@ -28,13 +35,14 @@
                 <textarea name="instructions" class="form-control" cols="30" rows="5"></textarea>
             </div>
             <div class="mb-3 ml-5">
-                <label for="date_made" class="form-label">Date Made On:</label><br>
+                <label for="date_made" class="form-label">Date Made:</label><br>
                 <input type="date" name="date_made" id=""><br>
                 <label for="make_time" class="form-label mt-3">Ready in 30 Minutes?</label><br>
-                <input type="radio" name="make_time" value="Yes">
-                <label for="make_time">Yes</label><br>
-                <input type="radio" name="make_time" value="No">
-                <label for="make_time">No</label><br>
+                <input id="1" type="radio" name="make_time" value="1">
+                <label for="1">Yes</label><br>
+                <input id="0" type="radio" name="make_time" value="0">
+                <label for="0">No</label><br>
+                <input type='submit' value='Create' class="btn btn-warning rounded-pill mt-4">
             </div>
         </form>
     </div>

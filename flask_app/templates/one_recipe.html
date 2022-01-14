@@ -13,13 +13,21 @@
         <nav class="navbar bg-secondary p-2 justify-content-between mb-4">
             <h3 class="text-light ml-4">{{ user.first_name }}'s Recipes</h3>
             <div class="d-flex">
-                <a class="btn rounded-pill btn-success" href="/logout">View All Recipes</a>
+                <a class="btn rounded-pill btn-success" href="/all_recipes">View All Recipes</a>
                 <a class="btn rounded-pill btn-danger ml-4 mr-4" href="/logout">Logout</a>
             </div>
         </nav>
         <h1 class="text-center mb-3">{{ recipe.name }}</h1>
-        <div class="card">
-
+        <div class="card col-6 mx-auto border-dark p-4">
+            <p><span class="text-primary">Description: </span>{{ recipe.description }}</p>
+            <p><span class="text-primary">Under 30 Minutes: </span>   
+                {% if recipe.make_time == 1 %}
+                    Yes
+                {% else %}
+                    No
+                {% endif %}</p>
+            <p><span class="text-primary">Instructions: </span>{{ recipe.instructions }}</p>
+            <p><span class="text-primary">Date Made: </span>{{recipe.date_made.strftime('%m-%d-%Y')}}</p>
         </div>
     </div>
 </body>

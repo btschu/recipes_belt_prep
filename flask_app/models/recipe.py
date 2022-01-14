@@ -1,6 +1,5 @@
 from flask_app.config.mysqlconnection import connectToMySQL
-from datetime import datetime
-import math
+from flask import flash
 
 class Recipe:
     def __init__( self , data ):
@@ -14,44 +13,49 @@ class Recipe:
         self.created_at = data['created_at']
         self.updated_at = data['updated_at']
 
-    def time_span(self):
-        now = datetime.now()
-        delta = now - self.created_at
-        print(delta.days)
-        print(delta.total_seconds())
-        if delta.days > 0:
-            return f"{delta.days} days ago"
-        elif (math.floor(delta.total_seconds() / 60)) >= 60:
-            return f"{math.floor(math.floor(delta.total_seconds() / 60)/60)} hours ago"
-        elif delta.total_seconds() >= 60:
-            return f"{math.floor(delta.total_seconds() / 60)} minutes ago"
-        else:
-            return f"{math.floor(delta.total_seconds())} seconds ago"
-
     @classmethod
     def get_all(cls):
         query = "SELECT * FROM recipes;"
         results = connectToMySQL('recipe_schema').query_db(query)
         recipes = []
-        for recipe in recipes:
-            recipes.append( cls(user))
+        for recipe in results:
+            recipes.append( cls(recipe))
         return recipes
 
-    # @classmethod
-    # def get_user_messages(cls,data):
-    #     query = "SELECT users.first_name as sender, users2.first_name as receiver, messages.* FROM users LEFT JOIN messages ON users.id = messages.sender_id LEFT JOIN users as users2 ON users2.id = messages.receiver_id WHERE users2.id =  %(id)s"
-    #     results = connectToMySQL('recipe_schema').query_db(query,data)
-    #     messages = []
-    #     for message in results:
-    #         messages.append( cls(message) )
-    #     return messages
+    @classmethod
+    def get_one(cls, data):
+        query = "SELECT * FROM recipes WHERE id = %(id)s;"
+        results = connectToMySQL('recipe_schema').query_db(query, data)
+        return cls(results[0])
+
+    @classmethod
+    def update(cls, data):
+        query = "UPDATE recipes SET name=%(name)s, description=%(description)s, instructions=%(instructions)s, make_time=%(make_time)s, date_made=%(date_made)s WHERE id = %(id)s;"
+        return connectToMySQL('recipe_schema').query_db(query,data)
 
     @classmethod
     def save(cls,data):
-        query = "INSERT INTO recipes (name,description,instructions, date_made, make_time, user_id) VALUES (%(name)s,%(desctiption)s,%(instructions)s,%(date_made)s,%(make_time)s,%(user_id)s);"
+        query = "INSERT INTO recipes (name, description, instructions, make_time, date_made, user_id) VALUES (%(name)s, %(description)s, %(instructions)s, %(make_time)s, %(date_made)s, %(user_id)s);"
         return connectToMySQL('recipe_schema').query_db(query,data)
 
     @classmethod
     def destroy(cls,data):
-        query = "DELETE FROM recipes WHERE recipe.id = %(id)s;"
+        query = "DELETE FROM recipes WHERE id = %(id)s;"
         return connectToMySQL('recipe_schema').query_db(query,data)
+
+    @staticmethod
+    def validate_recipe(recipe):
+        is_valid = True
+        if len(recipe['name']) < 3:
+            is_valid = False
+            flash("Name must be at least 3 characters","recipe")
+        if len(recipe['instructions']) < 3:
+            is_valid = False
+            flash("Instructions must be at least 3 characters","recipe")
+        if len(recipe['description']) < 3:
+            is_valid = False
+            flash("Description must be at least 3 characters","recipe")
+        if recipe['date_made'] == "":
+            is_valid = False
+            flash("Please enter a date","recipe")
+        return is_valid

@@ -43,10 +43,7 @@ def all_recipes():
     data ={
         'id': session['user_id']
     }
-    user = User.get_by_id(data)
-    # recipe = Recipe.get_user_messages(data)
-    users = User.get_all()
-    return render_template("all_recipes.html", user = user, users = users)
+    return render_template("all_recipes.html", user=User.get_by_id(data),recipes=Recipe.get_all())
 
 @app.route('/logout')
 def logout():

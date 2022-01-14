@@ -13,7 +13,7 @@
         <nav class="navbar bg-secondary p-2 justify-content-between mb-4">
             <h3 class="text-light ml-4">Welcome, {{ user.first_name }}!</h3>
             <div class="d-flex">
-                <a class="btn rounded-pill btn-success" href="/logout">Create New Recipe</a>
+                <a class="btn rounded-pill btn-success" href="/recipes/new">Create New Recipe</a>
                 <a class="btn rounded-pill btn-danger ml-4 mr-4" href="/logout">Logout</a>
             </div>
         </nav>
@@ -30,8 +30,17 @@
                 {% for recipe in recipes %}
                         <tr>
                             <td>{{ recipe.name }} </td>
-                            <td>{{ recipe.make_time }}</td>
-                            <td><a href="">View Instructions | </a><a href="">Edit | </a><a href="">Delete</a></td>
+                            {% if recipe.make_time == 1 %}
+                                <td>Yes</td>
+                            {% else %}
+                                <td>No</td>
+                            {% endif %}
+                            <td><a href="/recipe/{{ recipe.id }}">View Instructions</a>
+                                {% if recipe.user_id == session.user_id %}
+                                    <a href="/edit/recipe/{{recipe.id}}"> | Edit | </a>
+                                    <a href="/destroy/recipe/{{recipe.id}}">Delete</a>
+                                {% endif %}
+                            </td>
                         </tr>
                 {% endfor %}
             </tbody>
